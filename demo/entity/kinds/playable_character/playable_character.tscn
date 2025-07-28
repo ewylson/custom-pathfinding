@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5clljdb485su"]
+
+[ext_resource type="PackedScene" uid="uid://b111kyiwqm7tq" path="res://demo/entity/entity.tscn" id="1_52qlw"]
+[ext_resource type="Script" path="res://demo/entity/component/kinds/movement_component.gd" id="2_jcdtl"]
+
+[node name="PlayableCharacter" instance=ExtResource("1_52qlw")]
+
+[node name="Sprite2D" parent="." index="0"]
+modulate = Color(0, 0.4, 0.6, 1)
+
+[node name="MovementComponent" type="Node" parent="Components" index="1"]
+script = ExtResource("2_jcdtl")

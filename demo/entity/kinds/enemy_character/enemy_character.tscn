@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://bgvoxurcigu66"]
+
+[ext_resource type="PackedScene" uid="uid://b111kyiwqm7tq" path="res://demo/entity/entity.tscn" id="1_6h2o1"]
+[ext_resource type="Script" path="res://demo/entity/kinds/enemy_character/enemy_character.gd" id="2_sfmb5"]
+[ext_resource type="Script" path="res://pathfinding/pathfinder2d.gd" id="3_0101j"]
+
+[node name="EnemyCharacter" instance=ExtResource("1_6h2o1")]
+script = ExtResource("2_sfmb5")
+
+[node name="Sprite2D" parent="." index="0"]
+modulate = Color(0.75, 0.075, 0.075, 1)
+
+[node name="Pathfinder2D" type="Node" parent="." index="2"]
+script = ExtResource("3_0101j")
+heuristic = 1
+diagonal_mode = 1

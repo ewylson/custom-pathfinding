@@ -1,0 +1,143 @@
+[gd_scene load_steps=11 format=3 uid="uid://b111kyiwqm7tq"]
+
+[ext_resource type="Texture2D" uid="uid://dwprnidw0nl1h" path="res://demo/entity/art/prototype_character.atlastex" id="1_pii5h"]
+[ext_resource type="Script" path="res://demo/entity/entity.gd" id="1_xhhch"]
+[ext_resource type="Script" path="res://demo/entity/component/kinds/animation_component.gd" id="3_m812r"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4aa5c"]
+radius = 6.0
+
+[sub_resource type="Animation" id="Animation_rf471"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_hsulq"]
+resource_name = "look_down"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.466667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [3, 5, 3]
+}
+
+[sub_resource type="Animation" id="Animation_6tbb1"]
+resource_name = "look_left"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0, 2, 0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:flip_h")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_lvtvc"]
+resource_name = "look_right"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0, 2, 0]
+}
+
+[sub_resource type="Animation" id="Animation_wiwms"]
+resource_name = "look_up"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.466667, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [6, 8, 6]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tr8qh"]
+_data = {
+"RESET": SubResource("Animation_rf471"),
+"look_down": SubResource("Animation_hsulq"),
+"look_left": SubResource("Animation_6tbb1"),
+"look_right": SubResource("Animation_lvtvc"),
+"look_up": SubResource("Animation_wiwms")
+}
+
+[node name="Entity" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_xhhch")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_pii5h")
+hframes = 3
+vframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_4aa5c")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_tr8qh")
+}
+autoplay = "look_right"
+
+[node name="Components" type="Node" parent="."]
+
+[node name="AnimationComponent" type="Node" parent="Components"]
+script = ExtResource("3_m812r")
