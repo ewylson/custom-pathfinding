@@ -9,7 +9,7 @@ script/source = "extends Node
 
 
 func _ready() -> void:
-	$EnemyCharacter.pathfinder.pathdinding_map = PathfindingMap.new($TileMapLayers/GroundLayer, __get_impassable_cells())
+	$EnemyCharacter.pathfinder.pathfinding_map = PathfindingMap.new($TileMapLayers/GroundLayer, __get_impassable_cells())
 	return
 
 

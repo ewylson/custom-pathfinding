@@ -20,11 +20,11 @@ signal map_changed()
 @export var path_line_width : float = 1.0
 
 
-var pathdinding_map : PathfindingMap :
+var pathfinding_map : PathfindingMap :
 	get:
-		return pathdinding_map
+		return pathfinding_map
 	set(value):
-		pathdinding_map = value
+		pathfinding_map = value
 		__init_astar_grid()
 		__init_astar_options()
 		__update_grid_layout()
@@ -35,7 +35,7 @@ var target_position : Vector2 :
 		return target_position
 	set(value):
 		target_position = value
-		if pathdinding_map:
+		if pathfinding_map:
 			__find_path()
 		return
 
@@ -60,8 +60,8 @@ func _ready() -> void:
 
 func __init_astar_grid() -> void:
 	__astar_grid = AStarGrid2D.new()
-	__astar_grid.region = pathdinding_map.region
-	__astar_grid.cell_size = pathdinding_map.cell_size
+	__astar_grid.region = pathfinding_map.region
+	__astar_grid.cell_size = pathfinding_map.cell_size
 	__astar_grid.update()
 	return
 
@@ -83,7 +83,7 @@ func get_path_coords() -> Array[Vector2i]:
 func get_path_positions() -> Array[Vector2]:
 	var path_positions : Array[Vector2]
 	for coords : Vector2i in __path_coords:
-		path_positions.append(pathdinding_map.layer.map_to_local(coords))
+		path_positions.append(pathfinding_map.layer.map_to_local(coords))
 	return path_positions
 
 
@@ -91,7 +91,7 @@ func get_next_path_position() -> Vector2:
 	var next_position : Vector2
 	if __path_coords.size() > 1:
 		# Index 1 is used because index 0 contains the coordinates of the parent node itself.
-		next_position = pathdinding_map.layer.map_to_local(__path_coords[1])
+		next_position = pathfinding_map.layer.map_to_local(__path_coords[1])
 	return next_position
 
 
@@ -100,7 +100,7 @@ func is_target_reached() -> bool:
 
 
 func __update_grid_layout() -> void:
-	for cell : Vector2i in pathdinding_map.solid_cells:
+	for cell : Vector2i in pathfinding_map.solid_cells:
 		__astar_grid.set_point_solid(cell, true)
 	return
 
@@ -115,8 +115,8 @@ func __is_valid_destination_coords(from: Vector2i, to: Vector2i) -> bool:
 
 func __find_path() -> void:
 	if not is_target_reached():
-		var start_coords : Vector2i = pathdinding_map.layer.local_to_map(parent2d.position)
-		var end_coords : Vector2i = pathdinding_map.layer.local_to_map(target_position)
+		var start_coords : Vector2i = pathfinding_map.layer.local_to_map(parent2d.position)
+		var end_coords : Vector2i = pathfinding_map.layer.local_to_map(target_position)
 		if __is_valid_destination_coords(start_coords, end_coords):
 			__path_coords = __astar_grid.get_id_path(start_coords, end_coords, allow_partial_path)
 	if debug_enabled:
