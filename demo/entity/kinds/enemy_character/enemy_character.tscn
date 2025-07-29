@@ -6,11 +6,10 @@
 
 [node name="EnemyCharacter" instance=ExtResource("1_6h2o1")]
 script = ExtResource("2_sfmb5")
+speed = 50.0
 
 [node name="Sprite2D" parent="." index="0"]
 modulate = Color(0.75, 0.075, 0.075, 1)
 
 [node name="Pathfinder2D" type="Node" parent="." index="2"]
 script = ExtResource("3_0101j")
-heuristic = 1
-diagonal_mode = 1
