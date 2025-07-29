@@ -6,6 +6,9 @@ extends Node
 signal map_changed()
 
 
+@export_range(0.1, 1000.0, 0.01, "or_greater", "suffix:px") var target_desired_distance : float = 10.0
+
+@export_group("Pathfinding")
 @export var heuristic : AStarGrid2D.Heuristic
 @export var diagonal_mode : AStarGrid2D.DiagonalMode
 @export var simplify_path : bool = false
@@ -92,6 +95,10 @@ func get_next_path_position() -> Vector2:
 	return next_position
 
 
+func is_target_reached() -> bool:
+	return parent2d.position.distance_to(target_position) <= target_desired_distance
+
+
 func __update_grid_layout() -> void:
 	for cell : Vector2i in pathdinding_map.solid_cells:
 		__astar_grid.set_point_solid(cell, true)
@@ -107,10 +114,11 @@ func __is_valid_destination_coords(from: Vector2i, to: Vector2i) -> bool:
 
 
 func __find_path() -> void:
-	var start_coords : Vector2i = pathdinding_map.layer.local_to_map(parent2d.position)
-	var end_coords : Vector2i = pathdinding_map.layer.local_to_map(target_position)
-	if __is_valid_destination_coords(start_coords, end_coords):
-		__path_coords = __astar_grid.get_id_path(start_coords, end_coords, allow_partial_path)
+	if not is_target_reached():
+		var start_coords : Vector2i = pathdinding_map.layer.local_to_map(parent2d.position)
+		var end_coords : Vector2i = pathdinding_map.layer.local_to_map(target_position)
+		if __is_valid_destination_coords(start_coords, end_coords):
+			__path_coords = __astar_grid.get_id_path(start_coords, end_coords, allow_partial_path)
 	if debug_enabled:
 		__debug()
 	return
