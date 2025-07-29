@@ -86,10 +86,9 @@ func get_path_positions() -> Array[Vector2]:
 
 func get_next_path_position() -> Vector2:
 	var next_position : Vector2
-	for coords : Vector2i in __path_coords:
-		if coords != pathdinding_map.layer.local_to_map(parent2d.position):
-			next_position = pathdinding_map.layer.map_to_local(coords)
-			break
+	if __path_coords.size() > 1:
+		# Index 1 is used because index 0 contains the coordinates of the parent node itself.
+		next_position = pathdinding_map.layer.map_to_local(__path_coords[1])
 	return next_position
 
 
