@@ -3,7 +3,7 @@ class_name PathfindingDebugger
 extends Node2D
 
 
-var points : PackedVector2Array
+var positions : PackedVector2Array
 
 var line_color : Color
 var line_width : float
@@ -16,6 +16,12 @@ func _init(path_line_color: Color = Color.RED, path_line_width: float = 1.0) -> 
 
 
 func _draw() -> void:
-	if points.size() > 2:
-		draw_polyline(points, line_color, line_width)
+	if positions.size() > 2:
+		draw_polyline(positions, line_color, line_width)
+	return
+
+
+func draw_path(path_positions: Array[Vector2]) -> void:
+	positions = PackedVector2Array(path_positions)
+	queue_redraw()
 	return

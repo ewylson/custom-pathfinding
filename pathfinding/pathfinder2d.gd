@@ -119,7 +119,7 @@ func __find_path() -> void:
 		__path_points_index = 0
 		__target_reached = false
 		if debug_enabled:
-			__debug_draw_path()
+			__debugger.draw_path(get_path_positions())
 	return
 
 
@@ -128,16 +128,10 @@ func __update_path() -> void:
 		if __path_points[__path_points_index] == __position_to_point(parent2d.position):
 			__path_points_index += 1
 		if debug_enabled:
-			__debug_draw_path()
+			__debugger.draw_path(get_path_positions(__path_points_index))
 	else:
 		__target_reached = true
 		target_reached.emit()
-	return
-
-
-func __debug_draw_path() -> void:
-	__debugger.points = PackedVector2Array(get_path_positions(__path_points_index))
-	__debugger.queue_redraw()
 	return
 
 
