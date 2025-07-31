@@ -16,7 +16,7 @@ func _init(path_line_color: Color = Color.RED, path_line_width: float = 1.0) -> 
 
 
 func _draw() -> void:
-	if positions.size() > 2:
+	if positions.size() > 1:
 		draw_polyline(positions, line_color, line_width)
 	return
 
