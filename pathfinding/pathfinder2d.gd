@@ -3,6 +3,7 @@ class_name Pathfinder2D
 extends Node
 
 
+signal target_reached()
 signal map_changed()
 
 
@@ -34,14 +35,18 @@ var target_position : Vector2 :
 	get:
 		return target_position
 	set(value):
-		target_position = value
-		if pathfinding_map:
-			__find_path()
+		if target_position != value:
+			target_position = value
+			if pathfinding_map:
+				__find_path()
 		return
 
 
 var __astar_grid : AStarGrid2D
+
 var __path_points : Array[Vector2i]
+var __path_points_index : int = 0
+var __target_reached : bool = true
 
 var __debugger : PathfindingDebugger
 
@@ -80,23 +85,24 @@ func get_path_points() -> Array[Vector2i]:
 	return __path_points
 
 
-func get_path_positions() -> Array[Vector2]:
+func get_path_positions(from: int = 0) -> Array[Vector2]:
 	var path_positions : Array[Vector2]
-	for point : Vector2i in __path_points:
-		path_positions.append(pathfinding_map.layer.map_to_local(point))
+	while from < __path_points.size():
+		path_positions.append(__point_to_position(__path_points[from]))
+		from += 1
 	return path_positions
 
 
 func get_next_path_position() -> Vector2:
-	var next_position : Vector2
-	if __path_points.size() > 1:
-		# Index 1 is used because index 0 contains the coordinates of the parent node itself.
-		next_position = pathfinding_map.layer.map_to_local(__path_points[1])
+	var next_position : Vector2 = parent2d.position
+	__update_path()
+	if not __path_points.is_empty():
+		next_position = __point_to_position(__path_points[__path_points_index])
 	return next_position
 
 
 func is_target_reached() -> bool:
-	return parent2d.position.distance_to(target_position) <= target_desired_distance
+	return __target_reached
 
 
 func __update_grid_layout() -> void:
@@ -105,26 +111,54 @@ func __update_grid_layout() -> void:
 	return
 
 
-func __is_valid_destination_points(from: Vector2i, to: Vector2i) -> bool:
-	var result : bool = false
-	if from != to:
-		if __astar_grid.is_in_boundsv(from) and __astar_grid.is_in_boundsv(to):
-			result = true
-	return result
-
-
 func __find_path() -> void:
-	if not is_target_reached():
-		var start_point : Vector2i = pathfinding_map.layer.local_to_map(parent2d.position)
-		var final_point : Vector2i = pathfinding_map.layer.local_to_map(target_position)
-		if __is_valid_destination_points(start_point, final_point):
-			__path_points = __astar_grid.get_id_path(start_point, final_point, allow_partial_path)
-	if debug_enabled:
-		__debug()
+	var start_point : Vector2i = __position_to_point(parent2d.position)
+	var final_point : Vector2i = __position_to_point(target_position)
+	if __is_valid_destination_points(start_point, final_point):
+		__path_points = __astar_grid.get_id_path(start_point, final_point, allow_partial_path)
+		__path_points_index = 0
+		__target_reached = false
+		if debug_enabled:
+			__debug_draw_path()
 	return
 
 
-func __debug() -> void:
-	__debugger.points = PackedVector2Array(get_path_positions())
+func __update_path() -> void:
+	if __path_points_index < __path_points.size() - 1:
+		if __path_points[__path_points_index] == __position_to_point(parent2d.position):
+			__path_points_index += 1
+		if debug_enabled:
+			__debug_draw_path()
+	else:
+		__target_reached = true
+		target_reached.emit()
+	return
+
+
+func __debug_draw_path() -> void:
+	__debugger.points = PackedVector2Array(get_path_positions(__path_points_index))
 	__debugger.queue_redraw()
 	return
+
+
+#region Utility functions
+
+func __get_final_point() -> Vector2i:
+	var point : Vector2i
+	if not __path_points.is_empty():
+		point = __path_points.back()
+	return point
+
+
+func __is_valid_destination_points(from: Vector2i, to: Vector2i) -> bool:
+	return __astar_grid.is_in_boundsv(from) and __astar_grid.is_in_boundsv(to)
+
+
+func __point_to_position(point: Vector2i) -> Vector2:
+	return pathfinding_map.layer.map_to_local(point)
+
+
+func __position_to_point(position: Vector2) -> Vector2i:
+	return pathfinding_map.layer.local_to_map(position)
+
+#endregion
