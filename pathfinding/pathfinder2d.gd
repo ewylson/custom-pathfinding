@@ -41,7 +41,7 @@ var target_position : Vector2 :
 
 
 var __astar_grid : AStarGrid2D
-var __path_coords : Array[Vector2i]
+var __path_points : Array[Vector2i]
 
 var __debugger : PathfindingDebugger
 
@@ -76,22 +76,22 @@ func __init_astar_options() -> void:
 #endregion
 
 
-func get_path_coords() -> Array[Vector2i]:
-	return __path_coords
+func get_path_points() -> Array[Vector2i]:
+	return __path_points
 
 
 func get_path_positions() -> Array[Vector2]:
 	var path_positions : Array[Vector2]
-	for coords : Vector2i in __path_coords:
-		path_positions.append(pathfinding_map.layer.map_to_local(coords))
+	for point : Vector2i in __path_points:
+		path_positions.append(pathfinding_map.layer.map_to_local(point))
 	return path_positions
 
 
 func get_next_path_position() -> Vector2:
 	var next_position : Vector2
-	if __path_coords.size() > 1:
+	if __path_points.size() > 1:
 		# Index 1 is used because index 0 contains the coordinates of the parent node itself.
-		next_position = pathfinding_map.layer.map_to_local(__path_coords[1])
+		next_position = pathfinding_map.layer.map_to_local(__path_points[1])
 	return next_position
 
 
@@ -105,7 +105,7 @@ func __update_grid_layout() -> void:
 	return
 
 
-func __is_valid_destination_coords(from: Vector2i, to: Vector2i) -> bool:
+func __is_valid_destination_points(from: Vector2i, to: Vector2i) -> bool:
 	var result : bool = false
 	if from != to:
 		if __astar_grid.is_in_boundsv(from) and __astar_grid.is_in_boundsv(to):
@@ -115,10 +115,10 @@ func __is_valid_destination_coords(from: Vector2i, to: Vector2i) -> bool:
 
 func __find_path() -> void:
 	if not is_target_reached():
-		var start_coords : Vector2i = pathfinding_map.layer.local_to_map(parent2d.position)
-		var end_coords : Vector2i = pathfinding_map.layer.local_to_map(target_position)
-		if __is_valid_destination_coords(start_coords, end_coords):
-			__path_coords = __astar_grid.get_id_path(start_coords, end_coords, allow_partial_path)
+		var start_point : Vector2i = pathfinding_map.layer.local_to_map(parent2d.position)
+		var final_point : Vector2i = pathfinding_map.layer.local_to_map(target_position)
+		if __is_valid_destination_points(start_point, final_point):
+			__path_points = __astar_grid.get_id_path(start_point, final_point, allow_partial_path)
 	if debug_enabled:
 		__debug()
 	return
