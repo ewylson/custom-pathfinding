@@ -39,7 +39,7 @@ position = Vector2(296, 120)
 movement_target = NodePath("../PlayableCharacter")
 
 [node name="Pathfinder2D" parent="EnemyCharacter" index="2"]
-target_desired_distance = 5.0
+target_desired_distance = 12.0
 diagonal_mode = 3
 debug_enabled = true
 

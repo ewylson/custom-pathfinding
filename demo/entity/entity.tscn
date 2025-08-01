@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://demo/entity/component/kinds/animation_component.gd" id="3_m812r"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_4aa5c"]
-radius = 6.0
+radius = 5.0
 
 [sub_resource type="Animation" id="Animation_rf471"]
 length = 0.001
