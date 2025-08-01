@@ -13,28 +13,29 @@ After setting the `pathfinding_map` and `target_position` properties, the `get_n
 | Type | Property | Default | Description |
 |------|----------|---------|-------------|
 | [`float`](https://docs.godotengine.org/en/stable/classes/class_float.html) | `target_desired_distance` | `10.0` | Distance from the target at which the pathfinder considers the destination reached. |
-| [`AStarGrid2D.DiagonalMode`](https://docs.godotengine.org/en/stable/classes/class_astargrid2d.html#enum-astargrid2d-diagonalmode) | `diagonal_mode` | *(none)* | Diagonal movement setting used for pathfinding. |
-| [`AStarGrid2D.Heuristic`](https://docs.godotengine.org/en/stable/classes/class_astargrid2d.html#enum-astargrid2d-heuristic) | `heuristic` | *(none)* | Heuristic algorithm used to estimate distance to the goal. |
+| [`AStarGrid2D.DiagonalMode`](https://docs.godotengine.org/en/stable/classes/class_astargrid2d.html#enum-astargrid2d-diagonalmode) | `diagonal_mode` | `0` | Diagonal movement setting used for pathfinding. |
+| [`AStarGrid2D.Heuristic`](https://docs.godotengine.org/en/stable/classes/class_astargrid2d.html#enum-astargrid2d-heuristic) | `heuristic` | `0` | Heuristic algorithm used to estimate distance to the goal. |
 | [`bool`](https://docs.godotengine.org/en/stable/classes/class_bool.html) | `allow_partial_path` | `true` | Allows returning a partial path if a full path cannot be found. |
 | [`bool`](https://docs.godotengine.org/en/stable/classes/class_bool.html) | `simplify_path` | `false` | Simplifies the path by removing unnecessary points. |
 | [`bool`](https://docs.godotengine.org/en/stable/classes/class_bool.html) | `debug_enabled` | `false` | Enables debug visualization of the path. |
-| [`Color`](https://docs.godotengine.org/en/stable/classes/class_color.html) | `path_line_color` | `Color.RED` | Color of the path line when debug is enabled. |
+| [`Color`](https://docs.godotengine.org/en/stable/classes/class_color.html) | `path_line_color` | `Color(1, 0, 0, 1)` | Color of the path line when debug is enabled. |
 | [`float`](https://docs.godotengine.org/en/stable/classes/class_float.html) | `path_line_width` | `1.0` | Width of the path line in debug mode. |
-| [`PathfindingMap`](PathfindingMap.md) | `pathfinding_map` | *(none)* | Reference to the map used for pathfinding. |
-| [`Vector2`](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | `target_position` | *(none)* | The target position for the pathfinder. |
+| [`PathfindingMap`](PathfindingMap.md) | `pathfinding_map` | `null` | Reference to the map used for pathfinding. |
+| [`Vector2`](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | `target_position` | `Vector2(0, 0)` | The target position for the pathfinder. |
 
 ### Methods
 
 | Return Type | Method | Description |
 |-------------|--------|-------------|
-| [`Vector2`](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | `get_next_path_position()` | Returns the next position along the calculated path. |
-| [`Array`](https://docs.godotengine.org/en/stable/classes/class_array.html)[[`Vector2i`](https://docs.godotengine.org/en/stable/classes/class_vector2i.html)] | `get_path_coords()` | Returns the path as an array of grid coordinates. |
-| [`Array`](https://docs.godotengine.org/en/stable/classes/class_array.html)[[`Vector2`](https://docs.godotengine.org/en/stable/classes/class_vector2.html)] | `get_path_positions()` | Returns the path as an array of world positions. |
+| [`Vector2`](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | `get_next_path_position()` | Returns the next position along the calculated path.  If the pathfinder does not have a path, it will return the position of the pathfinder's parent. |
+| [`Array`](https://docs.godotengine.org/en/stable/classes/class_array.html)[[`Vector2i`](https://docs.godotengine.org/en/stable/classes/class_vector2i.html)] | `get_path_points()` | Returns the path as an array of points. |
+| [`Array`](https://docs.godotengine.org/en/stable/classes/class_array.html)[[`Vector2`](https://docs.godotengine.org/en/stable/classes/class_vector2.html)] | `get_path_positions(from: int = 0)` | Returns the path as an array of world positions. Optionally, specify the index of a path point to start returning positions from. Returns empty array if `from` is out of bounds. |
 | [`bool`](https://docs.godotengine.org/en/stable/classes/class_bool.html) | `is_target_reached()` | Returns `true` if the agent has reached its destination. |
 
 ### Signals
 
 | Signal | Description |
 |--------|-------------|
+| `target_reached()` | Emitted when the pathfinder's parent reached the target, i.e. the parent moved within `target_desired_distance` of the `target_position`. This signal is emitted only once per found path. |
 | `map_changed()` | Emitted when the pathfinding map has been changed. |
 
