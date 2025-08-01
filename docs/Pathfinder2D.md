@@ -29,8 +29,8 @@ After setting the `pathfinding_map` and `target_position` properties, the `get_n
 |-------------|--------|-------------|
 | [`Vector2`](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | `get_next_path_position()` | Returns the next position along the calculated path.  If the pathfinder does not have a path, it will return the position of the pathfinder's parent. |
 | [`Array`](https://docs.godotengine.org/en/stable/classes/class_array.html)[[`Vector2i`](https://docs.godotengine.org/en/stable/classes/class_vector2i.html)] | `get_path_points()` | Returns the path as an array of points. |
-| [`Array`](https://docs.godotengine.org/en/stable/classes/class_array.html)[[`Vector2`](https://docs.godotengine.org/en/stable/classes/class_vector2.html)] | `get_path_positions(from: int = 0)` | Returns the path as an array of world positions. Optionally, specify the index of a path point to start returning positions from. Returns empty array if `from` is out of bounds. |
-| [`bool`](https://docs.godotengine.org/en/stable/classes/class_bool.html) | `is_target_reached()` | Returns `true` if the agent has reached its destination. |
+| [`Array`](https://docs.godotengine.org/en/stable/classes/class_array.html)[[`Vector2`](https://docs.godotengine.org/en/stable/classes/class_vector2.html)] | `get_path_positions(from: int = 0)` | Returns the path as an array of world positions. Optionally, specify the index of a path point to start returning positions from. Returns an empty array if `from` is out of bounds. |
+| [`bool`](https://docs.godotengine.org/en/stable/classes/class_bool.html) | `is_target_reached()` | Returns `true` if the pathfinder's parent has reached its destination. |
 
 ### Signals
 
