@@ -36,3 +36,14 @@ func __calculate_velocity() -> Vector2:
 	return direction * speed
 ```
 
+## Credits
+
+This project uses custom node icons based on the open-source icon set from [Phosphor Icons](https://phosphoricons.com/).
+> Phosphor is a flexible and open-source icon family for interfaces, diagrams, presentations — whatever, really.
+> Licensed under the [MIT License](https://github.com/phosphor-icons/phosphor-home#license).
+
+## License
+
+This project is licensed under the [MIT License](https://github.com/ewylson/custom-pathfinding/blob/main/LICENSE).  
+You are free to use, modify, and distribute it under the terms of that license.
+
