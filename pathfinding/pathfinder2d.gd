@@ -97,7 +97,10 @@ func get_next_path_position() -> Vector2:
 	var next_position : Vector2 = parent2d.position
 	__update_path()
 	if not __path_points.is_empty():
-		next_position = __point_to_position(__path_points[__path_points_index])
+		if __path_points[__path_points_index] != __path_points.back():
+			next_position = __point_to_position(__path_points[__path_points_index])
+		else:
+			next_position = target_position
 	return next_position
 
 
@@ -129,20 +132,13 @@ func __update_path() -> void:
 			__path_points_index += 1
 		if debug_enabled:
 			__debugger.draw_path(get_path_positions(__path_points_index))
-	else:
+	elif target_desired_distance >= parent2d.position.distance_to(target_position):
 		__target_reached = true
 		target_reached.emit()
 	return
 
 
 #region Utility functions
-
-func __get_final_point() -> Vector2i:
-	var point : Vector2i
-	if not __path_points.is_empty():
-		point = __path_points.back()
-	return point
-
 
 func __is_valid_destination_points(from: Vector2i, to: Vector2i) -> bool:
 	return __astar_grid.is_in_boundsv(from) and __astar_grid.is_in_boundsv(to)
