@@ -17,8 +17,8 @@ signal map_changed()
 
 @export_group("Debug")
 @export var debug_enabled : bool = false
-@export var path_line_color := Color.RED
-@export var path_line_width : float = 1.0
+@export var debug_path_line_color := Color.RED
+@export var debug_path_line_width : float = 1.0
 
 
 var pathfinding_map : PathfindingMap :
@@ -56,7 +56,7 @@ var __debugger : PathfindingDebugger
 
 func _ready() -> void:
 	if debug_enabled:
-		__debugger = PathfindingDebugger.new(path_line_color, path_line_width)
+		__debugger = PathfindingDebugger.new(debug_path_line_color, debug_path_line_width)
 		add_child(__debugger)
 	return
 
