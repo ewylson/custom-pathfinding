@@ -28,7 +28,7 @@ var pathfinding_map : PathfindingMap :
 		pathfinding_map = value
 		__init_astar_grid()
 		__init_astar_options()
-		__update_grid_layout()
+		__update_astar_grid()
 		map_changed.emit()
 		return
 var target_position : Vector2 :
@@ -67,7 +67,6 @@ func __init_astar_grid() -> void:
 	__astar_grid = AStarGrid2D.new()
 	__astar_grid.region = pathfinding_map.region
 	__astar_grid.cell_size = pathfinding_map.cell_size
-	__astar_grid.update()
 	return
 
 
@@ -108,7 +107,8 @@ func is_target_reached() -> bool:
 	return __target_reached
 
 
-func __update_grid_layout() -> void:
+func __update_astar_grid() -> void:
+	__astar_grid.update()
 	for cell : Vector2i in pathfinding_map.solid_cells:
 		__astar_grid.set_point_solid(cell, true)
 	return
