@@ -27,6 +27,7 @@ window/vsync/vsync_mode=0
 
 folder_colors={
 "res://demo/": "gray",
+"res://docs/": "teal",
 "res://editor/": "blue"
 }
 
