@@ -3,6 +3,12 @@ class_name Pathfinder2D
 extends Node
 
 
+enum SourcePathfindingMode {
+	GROUPS_EXPLICIT,
+	GROUPS_WITH_CHILDREN,
+}
+
+
 signal target_reached()
 signal map_changed()
 
@@ -14,6 +20,10 @@ signal map_changed()
 @export var diagonal_mode : AStarGrid2D.DiagonalMode
 @export var simplify_path : bool = false
 @export var allow_partial_path : bool = true
+
+@export_group("Pathfinding Source")
+@export var source_pathfinding_mode : SourcePathfindingMode
+@export var source_pathfinding_group_name : StringName = &"pathfinding_source_group"
 
 @export_group("Debug")
 @export var debug_enabled : bool = false
@@ -55,6 +65,7 @@ var __debugger : PathfindingDebugger
 
 
 func _ready() -> void:
+	__init_pathfinding_map()
 	if debug_enabled:
 		__debugger = PathfindingDebugger.new(debug_path_line_color, debug_path_line_width)
 		add_child(__debugger)
@@ -62,6 +73,13 @@ func _ready() -> void:
 
 
 #region Initialization functions
+
+func __init_pathfinding_map() -> void:
+	var pathfinding_layers : Array[TileMapLayer] = __get_pathfinding_source_layers()
+	if not pathfinding_layers.is_empty():
+		pathfinding_map = PathfindingMap.new(pathfinding_layers.front(), __find_solid_cells(pathfinding_layers))
+	return
+
 
 func __init_astar_grid() -> void:
 	__astar_grid = AStarGrid2D.new()
@@ -105,6 +123,29 @@ func get_next_path_position() -> Vector2:
 
 func is_target_reached() -> bool:
 	return __target_reached
+
+
+func __get_pathfinding_source_layers() -> Array[TileMapLayer]:
+	var layers : Array[TileMapLayer]
+	match source_pathfinding_mode:
+		SourcePathfindingMode.GROUPS_EXPLICIT:
+			layers.assign(get_tree().get_nodes_in_group(source_pathfinding_group_name))
+		SourcePathfindingMode.GROUPS_WITH_CHILDREN:
+			for source_node : Node in get_tree().get_nodes_in_group(source_pathfinding_group_name):
+				for source_child : Node in source_node.get_children():
+					if source_child is TileMapLayer:
+						layers.append(source_child)
+	return layers
+
+
+func __find_solid_cells(layers: Array[TileMapLayer]) -> Array[Vector2i]:
+	var solid_cells : Array[Vector2i]
+	var main_layer : TileMapLayer = layers.pop_front()
+	for layer : TileMapLayer in layers:
+		for cell : Vector2i in layer.get_used_cells():
+			if cell in main_layer.get_used_cells() and not solid_cells.has(cell):
+				solid_cells.append(cell)
+	return solid_cells
 
 
 func __update_astar_grid() -> void:
