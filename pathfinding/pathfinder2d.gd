@@ -68,7 +68,7 @@ func _ready() -> void:
 	__init_pathfinding_map()
 	if debug_enabled:
 		__debugger = PathfindingDebugger.new(debug_path_line_color, debug_path_line_width)
-		add_child(__debugger)
+		add_child(__debugger, false, Node.INTERNAL_MODE_FRONT)
 	return
 
 
