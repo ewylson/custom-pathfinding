@@ -29,6 +29,7 @@ static var astar_grid_storage : Dictionary
 
 @export_group("Debug")
 @export var debug_enabled : bool = false
+@export var debug_waypoints_only : bool = false
 @export var debug_path_line_color := Color.RED
 @export var debug_path_line_width : float = 1.0
 
@@ -106,11 +107,14 @@ func get_path_points() -> Array[Vector2i]:
 	return __path_points
 
 
-func get_path_positions(from: int = 0) -> Array[Vector2]:
+func get_path_positions(from: int = 0, waypoints_only: bool = true) -> Array[Vector2]:
 	var path_positions : Array[Vector2]
 	while from < __path_points.size():
 		path_positions.append(__point_to_position(__path_points[from]))
 		from += 1
+	if not waypoints_only:
+		path_positions.push_front(parent2d.position)
+		path_positions.push_back(target_position)
 	return path_positions
 
 
@@ -145,7 +149,7 @@ func __find_path() -> void:
 		__path_points_index = 0
 		__target_reached = false
 		if debug_enabled:
-			__debugger.draw_path(get_path_positions())
+			__debugger.draw_path(get_path_positions(__path_points_index, debug_waypoints_only))
 	return
 
 
@@ -154,7 +158,7 @@ func __update_path() -> void:
 		if __path_points[__path_points_index] == __position_to_point(parent2d.position):
 			__path_points_index += 1
 		if debug_enabled:
-			__debugger.draw_path(get_path_positions(__path_points_index))
+			__debugger.draw_path(get_path_positions(__path_points_index, debug_waypoints_only))
 	elif target_desired_distance >= parent2d.position.distance_to(target_position):
 		__target_reached = true
 		target_reached.emit()
