@@ -49,7 +49,7 @@ var __path_points : Array[Vector2i]
 var __path_points_index : int = 0
 var __target_reached : bool = true
 
-var __debugger : PathfindingDebugger
+var __debugger : PathfinderDebugger
 
 
 @onready var parent2d : Node2D = get_parent()
@@ -90,7 +90,7 @@ func __init_astar_options() -> void:
 
 func __init_debug() -> void:
 	if debug_enabled:
-		__debugger = PathfindingDebugger.new(debug_path_line_color, debug_path_line_width)
+		__debugger = PathfinderDebugger.new(debug_path_line_color, debug_path_line_width)
 		add_child(__debugger, false, Node.INTERNAL_MODE_FRONT)
 	return
 

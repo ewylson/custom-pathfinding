@@ -1,5 +1,5 @@
 @icon("res://editor/icons/2d/bug-beetle-fill.svg")
-class_name PathfindingDebugger
+class_name PathfinderDebugger
 extends Node2D
 
 
