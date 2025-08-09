@@ -57,9 +57,11 @@ var __debugger : PathfinderDebugger
 
 func _ready() -> void:
 	__init_pathfinding_layer()
-	__init_astar_grid()
-	__init_astar_options()
-	__update_astar_grid()
+	__astar_grid = PathfindingServer.get_astar_grid(source_pathfinding_group_name)
+	if not __astar_grid:
+		__init_astar_grid()
+		__init_astar_options()
+		__update_astar_grid()
 	__init_debug()
 	return
 
@@ -151,6 +153,7 @@ func __update_astar_grid() -> void:
 	__astar_grid.update()
 	for cell : Vector2i in __solid_cells:
 		__astar_grid.set_point_solid(cell, true)
+	PathfindingServer.add_astar_grid(source_pathfinding_group_name, __astar_grid)
 	return
 
 

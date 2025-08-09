@@ -1,0 +1,3191 @@
+[gd_scene load_steps=4 format=4 uid="uid://dfkojc26u5ftm"]
+
+[ext_resource type="TileSet" uid="uid://djxj1874d0pu7" path="res://demo/tilemap/prototype_tileset.res" id="1_6gcya"]
+[ext_resource type="PackedScene" uid="uid://bgvoxurcigu66" path="res://demo/entity/kinds/enemy_character/enemy_character.tscn" id="2_w10se"]
+[ext_resource type="PackedScene" uid="uid://c5clljdb485su" path="res://demo/entity/kinds/playable_character/playable_character.tscn" id="3_qojbr"]
+
+[node name="DemoLevelPerformance" type="Node"]
+
+[node name="TileMapLayers" type="Node2D" parent="." groups=["pathfinding_source_group"]]
+
+[node name="GroundLayer" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAPAAYAAAAAAAIAAAAPAAcAAAAAAAIAAAAPAAgAAAAAAAIAAAAPAAkAAAAAAAIAAAAPAAoAAAAAAAIAAAAPAAsAAAAAAAIAAAAPAAwAAAAAAAIAAAAPAA0AAAAAAAIAAAAPAA4AAAAAAAIAAAAPAA8AAAAAAAIAAAAQAAYAAAAAAAIAAAAQAAcAAAAAAAIAAAAQAAgAAAAAAAIAAAAQAAkAAAAAAAIAAAAQAAoAAAAAAAIAAAAQAAsAAAAAAAIAAAAQAAwAAAAAAAIAAAAQAA0AAAAAAAIAAAAQAA4AAAAAAAIAAAAQAA8AAAAAAAIAAAARAAYAAAAAAAIAAAARAAcAAAAAAAIAAAARAAgAAAAAAAIAAAARAAkAAAAAAAIAAAARAAoAAAAAAAIAAAARAAsAAAAAAAIAAAARAAwAAAAAAAIAAAARAA0AAAAAAAIAAAARAA4AAAAAAAIAAAARAA8AAAAAAAIAAAASAAYAAAAAAAIAAAASAAcAAAAAAAIAAAASAAgAAAAAAAIAAAASAAkAAAAAAAIAAAASAAoAAAAAAAIAAAASAAsAAAAAAAIAAAASAAwAAAAAAAIAAAASAA0AAAAAAAIAAAASAA4AAAAAAAIAAAASAA8AAAAAAAIAAAATAAYAAAAAAAIAAAATAAcAAAAAAAIAAAATAAgAAAAAAAIAAAATAAkAAAAAAAIAAAATAAoAAAAAAAIAAAATAAsAAAAAAAIAAAATAAwAAAAAAAIAAAATAA0AAAAAAAIAAAATAA4AAAAAAAIAAAATAA8AAAAAAAIAAAAUAAYAAAAAAAIAAAAUAAcAAAAAAAIAAAAUAAgAAAAAAAIAAAAUAAkAAAAAAAIAAAAUAAoAAAAAAAIAAAAUAAsAAAAAAAIAAAAUAAwAAAAAAAIAAAAUAA0AAAAAAAIAAAAUAA4AAAAAAAIAAAAUAA8AAAAAAAIAAAAVAAYAAAAAAAIAAAAVAAcAAAAAAAIAAAAVAAgAAAAAAAIAAAAVAAkAAAAAAAIAAAAVAAoAAAAAAAIAAAAVAAsAAAAAAAIAAAAVAAwAAAAAAAIAAAAVAA0AAAAAAAIAAAAVAA4AAAAAAAIAAAAVAA8AAAAAAAIAAAAWAAYAAAAAAAIAAAAWAAcAAAAAAAIAAAAWAAgAAAAAAAIAAAAWAAkAAAAAAAIAAAAWAAoAAAAAAAIAAAAWAAsAAAAAAAIAAAAWAAwAAAAAAAIAAAAWAA0AAAAAAAIAAAAWAA4AAAAAAAIAAAAWAA8AAAAAAAIAAAAXAAYAAAAAAAIAAAAXAAcAAAAAAAIAAAAXAAgAAAAAAAIAAAAXAAkAAAAAAAIAAAAXAAoAAAAAAAIAAAAXAAsAAAAAAAIAAAAXAAwAAAAAAAIAAAAXAA0AAAAAAAIAAAAXAA4AAAAAAAIAAAAXAA8AAAAAAAIAAAAYAAYAAAAAAAIAAAAYAAcAAAAAAAIAAAAYAAgAAAAAAAIAAAAYAAkAAAAAAAIAAAAYAAoAAAAAAAIAAAAYAAsAAAAAAAIAAAAYAAwAAAAAAAIAAAAYAA0AAAAAAAIAAAAYAA4AAAAAAAIAAAAYAA8AAAAAAAIAAAAMAAMAAAAAAAIAAAAMAAQAAAAAAAIAAAAMAAUAAAAAAAIAAAAMAAYAAAAAAAIAAAAMAAcAAAAAAAIAAAAMAAgAAAAAAAIAAAAMAAkAAAAAAAIAAAAMAAoAAAAAAAIAAAAMAAsAAAAAAAIAAAAMAAwAAAAAAAIAAAAMAA0AAAAAAAIAAAAMAA4AAAAAAAIAAAAMAA8AAAAAAAIAAAAMABAAAAAAAAIAAAAMABEAAAAAAAIAAAAMABIAAAAAAAIAAAANAAMAAAAAAAIAAAANAAQAAAAAAAIAAAANAAUAAAAAAAIAAAANAAYAAAAAAAIAAAANAAcAAAAAAAIAAAANAAgAAAAAAAIAAAANAAkAAAAAAAIAAAANAAoAAAAAAAIAAAANAAsAAAAAAAIAAAANAAwAAAAAAAIAAAANAA0AAAAAAAIAAAANAA4AAAAAAAIAAAANAA8AAAAAAAIAAAANABAAAAAAAAIAAAANABEAAAAAAAIAAAANABIAAAAAAAIAAAAOAAMAAAAAAAIAAAAOAAQAAAAAAAIAAAAOAAUAAAAAAAIAAAAOAAYAAAAAAAIAAAAOAAcAAAAAAAIAAAAOAAgAAAAAAAIAAAAOAAkAAAAAAAIAAAAOAAoAAAAAAAIAAAAOAAsAAAAAAAIAAAAOAAwAAAAAAAIAAAAOAA0AAAAAAAIAAAAOAA4AAAAAAAIAAAAOAA8AAAAAAAIAAAAOABAAAAAAAAIAAAAOABEAAAAAAAIAAAAOABIAAAAAAAIAAAAPAAMAAAAAAAIAAAAPAAQAAAAAAAIAAAAPAAUAAAAAAAIAAAAPABAAAAAAAAIAAAAPABEAAAAAAAIAAAAPABIAAAAAAAIAAAAQAAMAAAAAAAIAAAAQAAQAAAAAAAIAAAAQAAUAAAAAAAIAAAAQABAAAAAAAAIAAAAQABEAAAAAAAIAAAAQABIAAAAAAAIAAAARAAMAAAAAAAIAAAARAAQAAAAAAAIAAAARAAUAAAAAAAIAAAARABAAAAAAAAIAAAARABEAAAAAAAIAAAARABIAAAAAAAIAAAASAAMAAAAAAAIAAAASAAQAAAAAAAIAAAASAAUAAAAAAAIAAAASABAAAAAAAAIAAAASABEAAAAAAAIAAAASABIAAAAAAAIAAAATAAMAAAAAAAIAAAATAAQAAAAAAAIAAAATAAUAAAAAAAIAAAATABAAAAAAAAIAAAATABEAAAAAAAIAAAATABIAAAAAAAIAAAAUAAMAAAAAAAIAAAAUAAQAAAAAAAIAAAAUAAUAAAAAAAIAAAAUABAAAAAAAAIAAAAUABEAAAAAAAIAAAAUABIAAAAAAAIAAAAVAAMAAAAAAAIAAAAVAAQAAAAAAAIAAAAVAAUAAAAAAAIAAAAVABAAAAAAAAIAAAAVABEAAAAAAAIAAAAVABIAAAAAAAIAAAAWAAMAAAAAAAIAAAAWAAQAAAAAAAIAAAAWAAUAAAAAAAIAAAAWABAAAAAAAAIAAAAWABEAAAAAAAIAAAAWABIAAAAAAAIAAAAXAAMAAAAAAAIAAAAXAAQAAAAAAAIAAAAXAAUAAAAAAAIAAAAXABAAAAAAAAIAAAAXABEAAAAAAAIAAAAXABIAAAAAAAIAAAAYAAMAAAAAAAIAAAAYAAQAAAAAAAIAAAAYAAUAAAAAAAIAAAAYABAAAAAAAAIAAAAYABEAAAAAAAIAAAAYABIAAAAAAAIAAAAZAAMAAAAAAAIAAAAZAAQAAAAAAAIAAAAZAAUAAAAAAAIAAAAZAAYAAAAAAAIAAAAZAAcAAAAAAAIAAAAZAAgAAAAAAAIAAAAZAAkAAAAAAAIAAAAZAAoAAAAAAAIAAAAZAAsAAAAAAAIAAAAZAAwAAAAAAAIAAAAZAA0AAAAAAAIAAAAZAA4AAAAAAAIAAAAZAA8AAAAAAAIAAAAZABAAAAAAAAIAAAAZABEAAAAAAAIAAAAZABIAAAAAAAIAAAAaAAMAAAAAAAIAAAAaAAQAAAAAAAIAAAAaAAUAAAAAAAIAAAAaAAYAAAAAAAIAAAAaAAcAAAAAAAIAAAAaAAgAAAAAAAIAAAAaAAkAAAAAAAIAAAAaAAoAAAAAAAIAAAAaAAsAAAAAAAIAAAAaAAwAAAAAAAIAAAAaAA0AAAAAAAIAAAAaAA4AAAAAAAIAAAAaAA8AAAAAAAIAAAAaABAAAAAAAAIAAAAaABEAAAAAAAIAAAAaABIAAAAAAAIAAAAbAAMAAAAAAAIAAAAbAAQAAAAAAAIAAAAbAAUAAAAAAAIAAAAbAAYAAAAAAAIAAAAbAAcAAAAAAAIAAAAbAAgAAAAAAAIAAAAbAAkAAAAAAAIAAAAbAAoAAAAAAAIAAAAbAAsAAAAAAAIAAAAbAAwAAAAAAAIAAAAbAA0AAAAAAAIAAAAbAA4AAAAAAAIAAAAbAA8AAAAAAAIAAAAbABAAAAAAAAIAAAAbABEAAAAAAAIAAAAbABIAAAAAAAIAAAALAAIAAAAAAAIAAAALAAMAAAAAAAIAAAALAAQAAAAAAAIAAAALAAUAAAAAAAIAAAALAAYAAAAAAAIAAAALAAcAAAAAAAIAAAALAAgAAAAAAAIAAAALAAkAAAAAAAIAAAALAAoAAAAAAAIAAAALAAsAAAAAAAIAAAALAAwAAAAAAAIAAAALAA0AAAAAAAIAAAALAA4AAAAAAAIAAAALAA8AAAAAAAIAAAALABAAAAAAAAIAAAALABEAAAAAAAIAAAALABIAAAAAAAIAAAALABMAAAAAAAIAAAAMAAIAAAAAAAIAAAAMABMAAAAAAAIAAAANAAIAAAAAAAIAAAANABMAAAAAAAIAAAAOAAIAAAAAAAIAAAAOABMAAAAAAAIAAAAPAAIAAAAAAAIAAAAPABMAAAAAAAIAAAAQAAIAAAAAAAIAAAAQABMAAAAAAAIAAAARAAIAAAAAAAIAAAARABMAAAAAAAIAAAASAAIAAAAAAAIAAAASABMAAAAAAAIAAAATAAIAAAAAAAIAAAATABMAAAAAAAIAAAAUAAIAAAAAAAIAAAAUABMAAAAAAAIAAAAVAAIAAAAAAAIAAAAVABMAAAAAAAIAAAAWAAIAAAAAAAIAAAAWABMAAAAAAAIAAAAXAAIAAAAAAAIAAAAXABMAAAAAAAIAAAAYAAIAAAAAAAIAAAAYABMAAAAAAAIAAAAZAAIAAAAAAAIAAAAZABMAAAAAAAIAAAAaAAIAAAAAAAIAAAAaABMAAAAAAAIAAAAbAAIAAAAAAAIAAAAbABMAAAAAAAIAAAAcAAIAAAAAAAIAAAAcAAMAAAAAAAIAAAAcAAQAAAAAAAIAAAAcAAUAAAAAAAIAAAAcAAYAAAAAAAIAAAAcAAcAAAAAAAIAAAAcAAgAAAAAAAIAAAAcAAkAAAAAAAIAAAAcAAoAAAAAAAIAAAAcAAsAAAAAAAIAAAAcAAwAAAAAAAIAAAAcAA0AAAAAAAIAAAAcAA4AAAAAAAIAAAAcAA8AAAAAAAIAAAAcABAAAAAAAAIAAAAcABEAAAAAAAIAAAAcABIAAAAAAAIAAAAcABMAAAAAAAIAAAAKAAEAAAAAAAIAAAAKAAIAAAAAAAIAAAAKAAMAAAAAAAIAAAAKAAQAAAAAAAIAAAAKAAUAAAAAAAIAAAAKAAYAAAAAAAIAAAAKAAcAAAAAAAIAAAAKAAgAAAAAAAIAAAAKAAkAAAAAAAIAAAAKAAoAAAAAAAIAAAAKAAsAAAAAAAIAAAAKAAwAAAAAAAIAAAAKAA0AAAAAAAIAAAAKAA4AAAAAAAIAAAAKAA8AAAAAAAIAAAAKABAAAAAAAAIAAAAKABEAAAAAAAIAAAAKABIAAAAAAAIAAAAKABMAAAAAAAIAAAAKABQAAAAAAAIAAAALAAEAAAAAAAIAAAALABQAAAAAAAIAAAAMAAEAAAAAAAIAAAAMABQAAAAAAAIAAAANAAEAAAAAAAIAAAANABQAAAAAAAIAAAAOAAEAAAAAAAIAAAAOABQAAAAAAAIAAAAPAAEAAAAAAAIAAAAPABQAAAAAAAIAAAAQAAEAAAAAAAIAAAAQABQAAAAAAAIAAAARAAEAAAAAAAIAAAARABQAAAAAAAIAAAASAAEAAAAAAAIAAAASABQAAAAAAAIAAAATAAEAAAAAAAIAAAATABQAAAAAAAIAAAAUAAEAAAAAAAIAAAAUABQAAAAAAAIAAAAVAAEAAAAAAAIAAAAVABQAAAAAAAIAAAAWAAEAAAAAAAIAAAAWABQAAAAAAAIAAAAXAAEAAAAAAAIAAAAXABQAAAAAAAIAAAAYAAEAAAAAAAIAAAAYABQAAAAAAAIAAAAZAAEAAAAAAAIAAAAZABQAAAAAAAIAAAAaAAEAAAAAAAIAAAAaABQAAAAAAAIAAAAbAAEAAAAAAAIAAAAbABQAAAAAAAIAAAAcAAEAAAAAAAIAAAAcABQAAAAAAAIAAAAdAAEAAAAAAAIAAAAdAAIAAAAAAAIAAAAdAAMAAAAAAAIAAAAdAAQAAAAAAAIAAAAdAAUAAAAAAAIAAAAdAAYAAAAAAAIAAAAdAAcAAAAAAAIAAAAdAAgAAAAAAAIAAAAdAAkAAAAAAAIAAAAdAAoAAAAAAAIAAAAdAAsAAAAAAAIAAAAdAAwAAAAAAAIAAAAdAA0AAAAAAAIAAAAdAA4AAAAAAAIAAAAdAA8AAAAAAAIAAAAdABAAAAAAAAIAAAAdABEAAAAAAAIAAAAdABIAAAAAAAIAAAAdABMAAAAAAAIAAAAdABQAAAAAAAIAAAA=")
+tile_set = ExtResource("1_6gcya")
+
+[node name="BorderLayer" type="TileMapLayer" parent="TileMapLayers"]
+tile_map_data = PackedByteArray("AAAKAAEAAAABAAEAAAAKAAIAAAABAAEAAAAKAAMAAAABAAEAAAAKAAQAAAABAAEAAAAKAAUAAAABAAEAAAAKAAYAAAABAAEAAAAKAAcAAAABAAEAAAAKAAgAAAABAAEAAAAKAAkAAAABAAEAAAAKAAoAAAABAAEAAAAKAAsAAAABAAEAAAAKAAwAAAABAAEAAAAKAA0AAAABAAEAAAAKAA4AAAABAAEAAAAKAA8AAAABAAEAAAAKABAAAAABAAEAAAAKABEAAAABAAEAAAAKABIAAAABAAEAAAAKABMAAAABAAEAAAAKABQAAAABAAEAAAALAAEAAAABAAEAAAALABQAAAABAAEAAAAMAAEAAAABAAEAAAAMABQAAAABAAEAAAANAAEAAAABAAEAAAANABQAAAABAAEAAAAOAAEAAAABAAEAAAAOABQAAAABAAEAAAAPAAEAAAABAAEAAAAPABQAAAABAAEAAAAQAAEAAAABAAEAAAAQABQAAAABAAEAAAARAAEAAAABAAEAAAARABQAAAABAAEAAAASAAEAAAABAAEAAAASABQAAAABAAEAAAATAAEAAAABAAEAAAATABQAAAABAAEAAAAUAAEAAAABAAEAAAAUABQAAAABAAEAAAAVAAEAAAABAAEAAAAVABQAAAABAAEAAAAWAAEAAAABAAEAAAAWABQAAAABAAEAAAAXAAEAAAABAAEAAAAXABQAAAABAAEAAAAYAAEAAAABAAEAAAAYABQAAAABAAEAAAAZAAEAAAABAAEAAAAZABQAAAABAAEAAAAaAAEAAAABAAEAAAAaABQAAAABAAEAAAAbAAEAAAABAAEAAAAbABQAAAABAAEAAAAcAAEAAAABAAEAAAAcABQAAAABAAEAAAAdAAEAAAABAAEAAAAdAAIAAAABAAEAAAAdAAMAAAABAAEAAAAdAAQAAAABAAEAAAAdAAUAAAABAAEAAAAdAAYAAAABAAEAAAAdAAcAAAABAAEAAAAdAAgAAAABAAEAAAAdAAkAAAABAAEAAAAdAAoAAAABAAEAAAAdAAsAAAABAAEAAAAdAAwAAAABAAEAAAAdAA0AAAABAAEAAAAdAA4AAAABAAEAAAAdAA8AAAABAAEAAAAdABAAAAABAAEAAAAdABEAAAABAAEAAAAdABIAAAABAAEAAAAdABMAAAABAAEAAAAdABQAAAABAAEAAAA=")
+tile_set = ExtResource("1_6gcya")
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="EnemyCharacter" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184.029, 40.1395)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter2" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(200, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter2" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter3" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(216, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter3" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter4" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(232, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter4" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter5" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(248, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter5" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter6" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(264, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter6" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter7" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(280, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter7" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter8" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(296, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter8" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter9" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(312, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter9" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter10" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(328, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter10" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter11" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(344, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter11" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter12" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(360, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter12" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter13" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(376, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter13" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter14" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(392, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter14" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter15" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(408, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter15" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter16" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(424, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter16" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter17" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(440, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter17" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter18" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(456, 40)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter18" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter19" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184, 56.1395)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter19" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter20" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(199.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter20" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter21" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(215.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter21" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter22" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(231.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter22" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter23" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(247.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter23" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter24" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(263.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter24" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter25" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(279.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter25" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter26" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(295.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter26" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter27" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(311.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter27" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter28" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(327.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter28" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter29" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(343.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter29" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter30" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(359.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter30" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter31" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(375.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter31" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter32" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(391.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter32" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter33" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(407.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter33" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter34" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(423.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter34" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter35" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(439.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter35" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter36" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(455.971, 56)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter36" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter37" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184, 72.1395)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter37" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter38" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(199.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter38" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter39" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(215.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter39" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter40" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(231.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter40" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter41" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(247.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter41" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter42" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(263.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter42" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter43" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(279.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter43" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter44" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(295.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter44" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter45" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(311.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter45" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter46" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(327.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter46" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter47" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(343.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter47" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter48" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(359.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter48" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter49" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(375.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter49" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter50" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(391.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter50" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter51" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(407.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter51" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter52" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(423.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter52" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter53" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(439.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter53" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter54" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(455.971, 72)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter54" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter55" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184, 88.1395)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter55" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter56" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(199.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter56" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter57" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(215.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter57" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter58" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(231.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter58" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter59" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(247.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter59" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter60" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(263.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter60" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter61" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(279.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter61" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter62" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(295.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter62" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter63" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(311.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter63" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter64" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(327.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter64" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter65" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(343.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter65" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter66" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(359.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter66" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter67" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(375.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter67" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter68" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(391.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter68" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter69" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(407.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter69" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter70" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(423.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter70" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter71" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(439.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter71" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter72" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(455.971, 88)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter72" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter73" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184, 104.139)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter73" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter74" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(199.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter74" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter75" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(215.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter75" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter76" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(231.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter76" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter77" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(247.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter77" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter78" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(263.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter78" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter79" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(279.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter79" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter80" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(295.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter80" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter81" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(311.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter81" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter82" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(327.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter82" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter83" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(343.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter83" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter84" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(359.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter84" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter85" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(375.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter85" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter86" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(391.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter86" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter87" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(407.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter87" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter88" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(423.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter88" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter89" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(439.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter89" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter90" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(455.971, 104)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter90" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter91" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184, 120.139)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter91" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter92" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(199.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter92" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter93" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(215.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter93" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter94" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(231.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter94" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter95" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(247.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter95" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter96" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(263.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter96" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter97" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(279.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter97" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter98" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(295.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter98" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter99" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(311.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter99" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter100" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(327.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter100" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter101" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(343.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter101" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter102" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(359.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter102" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter103" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(375.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter103" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter104" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(391.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter104" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter105" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(407.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter105" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter106" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(423.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter106" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter107" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(439.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter107" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter108" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(455.971, 120)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter108" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter109" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184, 136.139)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter109" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter110" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(199.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter110" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter111" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(215.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter111" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter112" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(231.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter112" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter113" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(247.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter113" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter114" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(263.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter114" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter115" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(279.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter115" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter116" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(295.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter116" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter117" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(311.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter117" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter118" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(327.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter118" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter119" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(343.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter119" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter120" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(359.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter120" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter121" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(375.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter121" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter122" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(391.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter122" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter123" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(407.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter123" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter124" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(423.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter124" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter125" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(439.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter125" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter126" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(455.971, 136)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter126" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter127" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184, 152.139)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter127" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter128" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(199.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter128" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter129" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(215.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter129" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter130" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(231.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter130" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter131" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(247.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter131" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter132" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(263.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter132" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter133" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(279.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter133" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter134" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(295.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter134" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter135" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(311.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter135" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter136" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(327.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter136" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter137" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(343.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter137" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter138" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(359.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter138" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter139" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(375.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter139" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter140" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(391.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter140" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter141" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(407.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter141" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter142" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(423.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter142" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter143" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(439.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter143" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter144" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(455.971, 152)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter144" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter145" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184.029, 168.139)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter145" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter146" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(200, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter146" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter147" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(216, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter147" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter148" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(232, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter148" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter149" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(248, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter149" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter150" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(264, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter150" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter151" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(280, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter151" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter152" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(296, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter152" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter153" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(312, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter153" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter154" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(328, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter154" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter155" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(344, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter155" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter156" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(360, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter156" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter157" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(376, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter157" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter158" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(392, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter158" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter159" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(408, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter159" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter160" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(424, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter160" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter161" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(440, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter161" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter162" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(456, 168)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter162" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter163" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184, 184.139)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter163" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter164" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(199.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter164" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter165" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(215.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter165" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter166" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(231.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter166" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter167" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(247.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter167" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter168" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(263.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter168" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter169" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(279.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter169" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter170" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(295.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter170" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter171" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(311.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter171" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter172" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(327.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter172" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter173" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(343.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter173" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter174" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(359.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter174" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter175" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(375.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter175" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter176" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(391.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter176" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter177" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(407.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter177" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter178" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(423.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter178" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter179" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(439.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter179" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter180" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(455.971, 184)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter180" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter181" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184, 200.139)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter181" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter182" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(199.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter182" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter183" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(215.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter183" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter184" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(231.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter184" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter185" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(247.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter185" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter186" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(263.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter186" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter187" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(279.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter187" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter188" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(295.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter188" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter189" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(311.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter189" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter190" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(327.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter190" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter191" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(343.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter191" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter192" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(359.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter192" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter193" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(375.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter193" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter194" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(391.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter194" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter195" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(407.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter195" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter196" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(423.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter196" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter197" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(439.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter197" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter198" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(455.971, 200)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter198" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter199" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184, 216.139)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter199" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter200" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(199.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter200" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter201" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(215.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter201" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter202" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(231.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter202" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter203" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(247.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter203" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter204" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(263.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter204" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter205" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(279.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter205" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter206" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(295.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter206" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter207" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(311.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter207" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter208" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(327.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter208" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter209" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(343.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter209" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter210" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(359.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter210" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter211" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(375.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter211" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter212" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(391.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter212" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter213" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(407.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter213" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter214" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(423.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter214" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter215" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(439.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter215" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter216" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(455.971, 216)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter216" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter217" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184, 232.139)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter217" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter218" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(199.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter218" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter219" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(215.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter219" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter220" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(231.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter220" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter221" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(247.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter221" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter222" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(263.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter222" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter223" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(279.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter223" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter224" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(295.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter224" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter225" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(311.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter225" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter226" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(327.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter226" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter227" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(343.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter227" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter228" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(359.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter228" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter229" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(375.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter229" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter230" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(391.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter230" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter231" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(407.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter231" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter232" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(423.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter232" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter233" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(439.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter233" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter234" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(455.971, 232)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter234" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter235" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184, 248.139)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter235" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter236" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(199.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter236" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter237" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(215.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter237" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter238" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(231.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter238" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter239" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(247.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter239" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter240" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(263.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter240" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter241" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(279.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter241" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter242" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(295.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter242" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter243" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(311.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter243" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter244" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(327.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter244" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter245" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(343.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter245" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter246" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(359.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter246" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter247" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(375.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter247" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter248" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(391.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter248" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter249" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(407.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter249" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter250" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(423.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter250" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter251" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(439.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter251" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter252" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(455.971, 248)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter252" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter253" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184, 264.139)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter253" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter254" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(199.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter254" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter255" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(215.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter255" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter256" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(231.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter256" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter257" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(247.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter257" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter258" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(263.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter258" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter259" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(279.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter259" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter260" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(295.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter260" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter261" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(311.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter261" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter262" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(327.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter262" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter263" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(343.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter263" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter264" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(359.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter264" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter265" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(375.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter265" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter266" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(391.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter266" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter267" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(407.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter267" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter268" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(423.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter268" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter269" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(439.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter269" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter270" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(455.971, 264)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter270" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter271" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(184, 280.139)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter271" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter272" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(199.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter272" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter273" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(215.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter273" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter274" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(231.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter274" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter275" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(247.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter275" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter276" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(263.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter276" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter277" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(279.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter277" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter278" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(295.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter278" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter279" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(311.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter279" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter280" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(327.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter280" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter281" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(343.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter281" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter282" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(359.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter282" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter283" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(375.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter283" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter284" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(391.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter284" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter285" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(407.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter285" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter286" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(423.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter286" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter287" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(439.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter287" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="EnemyCharacter288" parent="Enemies" node_paths=PackedStringArray("movement_target") instance=ExtResource("2_w10se")]
+position = Vector2(455.971, 280)
+movement_target = NodePath("../../PlayableCharacter")
+speed = 15.0
+metadata/_edit_group_ = true
+
+[node name="Pathfinder2D" parent="Enemies/EnemyCharacter288" index="2"]
+target_desired_distance = 12.0
+source_pathfinding_mode = 1
+
+[node name="PlayableCharacter" parent="." instance=ExtResource("3_qojbr")]
+position = Vector2(345, 312)
+
+[editable path="Enemies/EnemyCharacter"]
+[editable path="Enemies/EnemyCharacter2"]
+[editable path="Enemies/EnemyCharacter3"]
+[editable path="Enemies/EnemyCharacter4"]
+[editable path="Enemies/EnemyCharacter5"]
+[editable path="Enemies/EnemyCharacter6"]
+[editable path="Enemies/EnemyCharacter7"]
+[editable path="Enemies/EnemyCharacter8"]
+[editable path="Enemies/EnemyCharacter9"]
+[editable path="Enemies/EnemyCharacter10"]
+[editable path="Enemies/EnemyCharacter11"]
+[editable path="Enemies/EnemyCharacter12"]
+[editable path="Enemies/EnemyCharacter13"]
+[editable path="Enemies/EnemyCharacter14"]
+[editable path="Enemies/EnemyCharacter15"]
+[editable path="Enemies/EnemyCharacter16"]
+[editable path="Enemies/EnemyCharacter17"]
+[editable path="Enemies/EnemyCharacter18"]
+[editable path="Enemies/EnemyCharacter19"]
+[editable path="Enemies/EnemyCharacter20"]
+[editable path="Enemies/EnemyCharacter21"]
+[editable path="Enemies/EnemyCharacter22"]
+[editable path="Enemies/EnemyCharacter23"]
+[editable path="Enemies/EnemyCharacter24"]
+[editable path="Enemies/EnemyCharacter25"]
+[editable path="Enemies/EnemyCharacter26"]
+[editable path="Enemies/EnemyCharacter27"]
+[editable path="Enemies/EnemyCharacter28"]
+[editable path="Enemies/EnemyCharacter29"]
+[editable path="Enemies/EnemyCharacter30"]
+[editable path="Enemies/EnemyCharacter31"]
+[editable path="Enemies/EnemyCharacter32"]
+[editable path="Enemies/EnemyCharacter33"]
+[editable path="Enemies/EnemyCharacter34"]
+[editable path="Enemies/EnemyCharacter35"]
+[editable path="Enemies/EnemyCharacter36"]
+[editable path="Enemies/EnemyCharacter37"]
+[editable path="Enemies/EnemyCharacter38"]
+[editable path="Enemies/EnemyCharacter39"]
+[editable path="Enemies/EnemyCharacter40"]
+[editable path="Enemies/EnemyCharacter41"]
+[editable path="Enemies/EnemyCharacter42"]
+[editable path="Enemies/EnemyCharacter43"]
+[editable path="Enemies/EnemyCharacter44"]
+[editable path="Enemies/EnemyCharacter45"]
+[editable path="Enemies/EnemyCharacter46"]
+[editable path="Enemies/EnemyCharacter47"]
+[editable path="Enemies/EnemyCharacter48"]
+[editable path="Enemies/EnemyCharacter49"]
+[editable path="Enemies/EnemyCharacter50"]
+[editable path="Enemies/EnemyCharacter51"]
+[editable path="Enemies/EnemyCharacter52"]
+[editable path="Enemies/EnemyCharacter53"]
+[editable path="Enemies/EnemyCharacter54"]
+[editable path="Enemies/EnemyCharacter55"]
+[editable path="Enemies/EnemyCharacter56"]
+[editable path="Enemies/EnemyCharacter57"]
+[editable path="Enemies/EnemyCharacter58"]
+[editable path="Enemies/EnemyCharacter59"]
+[editable path="Enemies/EnemyCharacter60"]
+[editable path="Enemies/EnemyCharacter61"]
+[editable path="Enemies/EnemyCharacter62"]
+[editable path="Enemies/EnemyCharacter63"]
+[editable path="Enemies/EnemyCharacter64"]
+[editable path="Enemies/EnemyCharacter65"]
+[editable path="Enemies/EnemyCharacter66"]
+[editable path="Enemies/EnemyCharacter67"]
+[editable path="Enemies/EnemyCharacter68"]
+[editable path="Enemies/EnemyCharacter69"]
+[editable path="Enemies/EnemyCharacter70"]
+[editable path="Enemies/EnemyCharacter71"]
+[editable path="Enemies/EnemyCharacter72"]
+[editable path="Enemies/EnemyCharacter73"]
+[editable path="Enemies/EnemyCharacter74"]
+[editable path="Enemies/EnemyCharacter75"]
+[editable path="Enemies/EnemyCharacter76"]
+[editable path="Enemies/EnemyCharacter77"]
+[editable path="Enemies/EnemyCharacter78"]
+[editable path="Enemies/EnemyCharacter79"]
+[editable path="Enemies/EnemyCharacter80"]
+[editable path="Enemies/EnemyCharacter81"]
+[editable path="Enemies/EnemyCharacter82"]
+[editable path="Enemies/EnemyCharacter83"]
+[editable path="Enemies/EnemyCharacter84"]
+[editable path="Enemies/EnemyCharacter85"]
+[editable path="Enemies/EnemyCharacter86"]
+[editable path="Enemies/EnemyCharacter87"]
+[editable path="Enemies/EnemyCharacter88"]
+[editable path="Enemies/EnemyCharacter89"]
+[editable path="Enemies/EnemyCharacter90"]
+[editable path="Enemies/EnemyCharacter91"]
+[editable path="Enemies/EnemyCharacter92"]
+[editable path="Enemies/EnemyCharacter93"]
+[editable path="Enemies/EnemyCharacter94"]
+[editable path="Enemies/EnemyCharacter95"]
+[editable path="Enemies/EnemyCharacter96"]
+[editable path="Enemies/EnemyCharacter97"]
+[editable path="Enemies/EnemyCharacter98"]
+[editable path="Enemies/EnemyCharacter99"]
+[editable path="Enemies/EnemyCharacter100"]
+[editable path="Enemies/EnemyCharacter101"]
+[editable path="Enemies/EnemyCharacter102"]
+[editable path="Enemies/EnemyCharacter103"]
+[editable path="Enemies/EnemyCharacter104"]
+[editable path="Enemies/EnemyCharacter105"]
+[editable path="Enemies/EnemyCharacter106"]
+[editable path="Enemies/EnemyCharacter107"]
+[editable path="Enemies/EnemyCharacter108"]
+[editable path="Enemies/EnemyCharacter109"]
+[editable path="Enemies/EnemyCharacter110"]
+[editable path="Enemies/EnemyCharacter111"]
+[editable path="Enemies/EnemyCharacter112"]
+[editable path="Enemies/EnemyCharacter113"]
+[editable path="Enemies/EnemyCharacter114"]
+[editable path="Enemies/EnemyCharacter115"]
+[editable path="Enemies/EnemyCharacter116"]
+[editable path="Enemies/EnemyCharacter117"]
+[editable path="Enemies/EnemyCharacter118"]
+[editable path="Enemies/EnemyCharacter119"]
+[editable path="Enemies/EnemyCharacter120"]
+[editable path="Enemies/EnemyCharacter121"]
+[editable path="Enemies/EnemyCharacter122"]
+[editable path="Enemies/EnemyCharacter123"]
+[editable path="Enemies/EnemyCharacter124"]
+[editable path="Enemies/EnemyCharacter125"]
+[editable path="Enemies/EnemyCharacter126"]
+[editable path="Enemies/EnemyCharacter127"]
+[editable path="Enemies/EnemyCharacter128"]
+[editable path="Enemies/EnemyCharacter129"]
+[editable path="Enemies/EnemyCharacter130"]
+[editable path="Enemies/EnemyCharacter131"]
+[editable path="Enemies/EnemyCharacter132"]
+[editable path="Enemies/EnemyCharacter133"]
+[editable path="Enemies/EnemyCharacter134"]
+[editable path="Enemies/EnemyCharacter135"]
+[editable path="Enemies/EnemyCharacter136"]
+[editable path="Enemies/EnemyCharacter137"]
+[editable path="Enemies/EnemyCharacter138"]
+[editable path="Enemies/EnemyCharacter139"]
+[editable path="Enemies/EnemyCharacter140"]
+[editable path="Enemies/EnemyCharacter141"]
+[editable path="Enemies/EnemyCharacter142"]
+[editable path="Enemies/EnemyCharacter143"]
+[editable path="Enemies/EnemyCharacter144"]
+[editable path="Enemies/EnemyCharacter145"]
+[editable path="Enemies/EnemyCharacter146"]
+[editable path="Enemies/EnemyCharacter147"]
+[editable path="Enemies/EnemyCharacter148"]
+[editable path="Enemies/EnemyCharacter149"]
+[editable path="Enemies/EnemyCharacter150"]
+[editable path="Enemies/EnemyCharacter151"]
+[editable path="Enemies/EnemyCharacter152"]
+[editable path="Enemies/EnemyCharacter153"]
+[editable path="Enemies/EnemyCharacter154"]
+[editable path="Enemies/EnemyCharacter155"]
+[editable path="Enemies/EnemyCharacter156"]
+[editable path="Enemies/EnemyCharacter157"]
+[editable path="Enemies/EnemyCharacter158"]
+[editable path="Enemies/EnemyCharacter159"]
+[editable path="Enemies/EnemyCharacter160"]
+[editable path="Enemies/EnemyCharacter161"]
+[editable path="Enemies/EnemyCharacter162"]
+[editable path="Enemies/EnemyCharacter163"]
+[editable path="Enemies/EnemyCharacter164"]
+[editable path="Enemies/EnemyCharacter165"]
+[editable path="Enemies/EnemyCharacter166"]
+[editable path="Enemies/EnemyCharacter167"]
+[editable path="Enemies/EnemyCharacter168"]
+[editable path="Enemies/EnemyCharacter169"]
+[editable path="Enemies/EnemyCharacter170"]
+[editable path="Enemies/EnemyCharacter171"]
+[editable path="Enemies/EnemyCharacter172"]
+[editable path="Enemies/EnemyCharacter173"]
+[editable path="Enemies/EnemyCharacter174"]
+[editable path="Enemies/EnemyCharacter175"]
+[editable path="Enemies/EnemyCharacter176"]
+[editable path="Enemies/EnemyCharacter177"]
+[editable path="Enemies/EnemyCharacter178"]
+[editable path="Enemies/EnemyCharacter179"]
+[editable path="Enemies/EnemyCharacter180"]
+[editable path="Enemies/EnemyCharacter181"]
+[editable path="Enemies/EnemyCharacter182"]
+[editable path="Enemies/EnemyCharacter183"]
+[editable path="Enemies/EnemyCharacter184"]
+[editable path="Enemies/EnemyCharacter185"]
+[editable path="Enemies/EnemyCharacter186"]
+[editable path="Enemies/EnemyCharacter187"]
+[editable path="Enemies/EnemyCharacter188"]
+[editable path="Enemies/EnemyCharacter189"]
+[editable path="Enemies/EnemyCharacter190"]
+[editable path="Enemies/EnemyCharacter191"]
+[editable path="Enemies/EnemyCharacter192"]
+[editable path="Enemies/EnemyCharacter193"]
+[editable path="Enemies/EnemyCharacter194"]
+[editable path="Enemies/EnemyCharacter195"]
+[editable path="Enemies/EnemyCharacter196"]
+[editable path="Enemies/EnemyCharacter197"]
+[editable path="Enemies/EnemyCharacter198"]
+[editable path="Enemies/EnemyCharacter199"]
+[editable path="Enemies/EnemyCharacter200"]
+[editable path="Enemies/EnemyCharacter201"]
+[editable path="Enemies/EnemyCharacter202"]
+[editable path="Enemies/EnemyCharacter203"]
+[editable path="Enemies/EnemyCharacter204"]
+[editable path="Enemies/EnemyCharacter205"]
+[editable path="Enemies/EnemyCharacter206"]
+[editable path="Enemies/EnemyCharacter207"]
+[editable path="Enemies/EnemyCharacter208"]
+[editable path="Enemies/EnemyCharacter209"]
+[editable path="Enemies/EnemyCharacter210"]
+[editable path="Enemies/EnemyCharacter211"]
+[editable path="Enemies/EnemyCharacter212"]
+[editable path="Enemies/EnemyCharacter213"]
+[editable path="Enemies/EnemyCharacter214"]
+[editable path="Enemies/EnemyCharacter215"]
+[editable path="Enemies/EnemyCharacter216"]
+[editable path="Enemies/EnemyCharacter217"]
+[editable path="Enemies/EnemyCharacter218"]
+[editable path="Enemies/EnemyCharacter219"]
+[editable path="Enemies/EnemyCharacter220"]
+[editable path="Enemies/EnemyCharacter221"]
+[editable path="Enemies/EnemyCharacter222"]
+[editable path="Enemies/EnemyCharacter223"]
+[editable path="Enemies/EnemyCharacter224"]
+[editable path="Enemies/EnemyCharacter225"]
+[editable path="Enemies/EnemyCharacter226"]
+[editable path="Enemies/EnemyCharacter227"]
+[editable path="Enemies/EnemyCharacter228"]
+[editable path="Enemies/EnemyCharacter229"]
+[editable path="Enemies/EnemyCharacter230"]
+[editable path="Enemies/EnemyCharacter231"]
+[editable path="Enemies/EnemyCharacter232"]
+[editable path="Enemies/EnemyCharacter233"]
+[editable path="Enemies/EnemyCharacter234"]
+[editable path="Enemies/EnemyCharacter235"]
+[editable path="Enemies/EnemyCharacter236"]
+[editable path="Enemies/EnemyCharacter237"]
+[editable path="Enemies/EnemyCharacter238"]
+[editable path="Enemies/EnemyCharacter239"]
+[editable path="Enemies/EnemyCharacter240"]
+[editable path="Enemies/EnemyCharacter241"]
+[editable path="Enemies/EnemyCharacter242"]
+[editable path="Enemies/EnemyCharacter243"]
+[editable path="Enemies/EnemyCharacter244"]
+[editable path="Enemies/EnemyCharacter245"]
+[editable path="Enemies/EnemyCharacter246"]
+[editable path="Enemies/EnemyCharacter247"]
+[editable path="Enemies/EnemyCharacter248"]
+[editable path="Enemies/EnemyCharacter249"]
+[editable path="Enemies/EnemyCharacter250"]
+[editable path="Enemies/EnemyCharacter251"]
+[editable path="Enemies/EnemyCharacter252"]
+[editable path="Enemies/EnemyCharacter253"]
+[editable path="Enemies/EnemyCharacter254"]
+[editable path="Enemies/EnemyCharacter255"]
+[editable path="Enemies/EnemyCharacter256"]
+[editable path="Enemies/EnemyCharacter257"]
+[editable path="Enemies/EnemyCharacter258"]
+[editable path="Enemies/EnemyCharacter259"]
+[editable path="Enemies/EnemyCharacter260"]
+[editable path="Enemies/EnemyCharacter261"]
+[editable path="Enemies/EnemyCharacter262"]
+[editable path="Enemies/EnemyCharacter263"]
+[editable path="Enemies/EnemyCharacter264"]
+[editable path="Enemies/EnemyCharacter265"]
+[editable path="Enemies/EnemyCharacter266"]
+[editable path="Enemies/EnemyCharacter267"]
+[editable path="Enemies/EnemyCharacter268"]
+[editable path="Enemies/EnemyCharacter269"]
+[editable path="Enemies/EnemyCharacter270"]
+[editable path="Enemies/EnemyCharacter271"]
+[editable path="Enemies/EnemyCharacter272"]
+[editable path="Enemies/EnemyCharacter273"]
+[editable path="Enemies/EnemyCharacter274"]
+[editable path="Enemies/EnemyCharacter275"]
+[editable path="Enemies/EnemyCharacter276"]
+[editable path="Enemies/EnemyCharacter277"]
+[editable path="Enemies/EnemyCharacter278"]
+[editable path="Enemies/EnemyCharacter279"]
+[editable path="Enemies/EnemyCharacter280"]
+[editable path="Enemies/EnemyCharacter281"]
+[editable path="Enemies/EnemyCharacter282"]
+[editable path="Enemies/EnemyCharacter283"]
+[editable path="Enemies/EnemyCharacter284"]
+[editable path="Enemies/EnemyCharacter285"]
+[editable path="Enemies/EnemyCharacter286"]
+[editable path="Enemies/EnemyCharacter287"]
+[editable path="Enemies/EnemyCharacter288"]
