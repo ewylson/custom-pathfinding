@@ -19,7 +19,6 @@ signal target_reached()
 @export var diagonal_mode : AStarGrid2D.DiagonalMode
 @export var simplify_path : bool = false
 @export var allow_partial_path : bool = true
-@export var allow_ignore_solid_cells : bool = false
 
 @export_group("Pathfinding Source")
 @export var source_pathfinding_mode : SourcePathfindingMode
@@ -151,7 +150,7 @@ func __find_solid_cells(layers: Array[TileMapLayer]) -> Array[Vector2i]:
 func __update_astar_grid() -> void:
 	__astar_grid.update()
 	for cell : Vector2i in __solid_cells:
-		__astar_grid.set_point_solid(cell, not allow_ignore_solid_cells)
+		__astar_grid.set_point_solid(cell, true)
 	return
 
 
