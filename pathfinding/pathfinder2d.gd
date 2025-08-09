@@ -10,7 +10,6 @@ enum SourcePathfindingMode {
 
 
 signal target_reached()
-signal map_changed()
 
 
 @export_range(0.1, 1000.0, 0.01, "or_greater", "suffix:px") var target_desired_distance : float = 10.0
@@ -32,28 +31,20 @@ signal map_changed()
 @export var debug_path_line_width : float = 1.0
 
 
-var pathfinding_map : PathfindingMap :
-	get:
-		return pathfinding_map
-	set(value):
-		pathfinding_map = value
-		__init_astar_grid()
-		__init_astar_options()
-		__update_astar_grid()
-		map_changed.emit()
-		return
 var target_position : Vector2 :
 	get:
 		return target_position
 	set(value):
 		if target_position != value:
 			target_position = value
-			if pathfinding_map:
+			if __astar_grid:
 				__find_path()
 		return
 
 
 var __astar_grid : AStarGrid2D
+var __pathfinding_layer : TileMapLayer
+var __solid_cells : Array[Vector2i]
 
 var __path_points : Array[Vector2i]
 var __path_points_index : int = 0
@@ -66,26 +57,27 @@ var __debugger : PathfindingDebugger
 
 
 func _ready() -> void:
-	__init_pathfinding_map()
-	if debug_enabled:
-		__debugger = PathfindingDebugger.new(debug_path_line_color, debug_path_line_width)
-		add_child(__debugger, false, Node.INTERNAL_MODE_FRONT)
+	__init_pathfinding_layer()
+	__init_astar_grid()
+	__init_astar_options()
+	__update_astar_grid()
+	__init_debug()
 	return
 
 
 #region Initialization functions
 
-func __init_pathfinding_map() -> void:
-	var pathfinding_layers : Array[TileMapLayer] = __get_pathfinding_source_layers()
-	if not pathfinding_layers.is_empty():
-		pathfinding_map = PathfindingMap.new(pathfinding_layers.front(), __find_solid_cells(pathfinding_layers))
+func __init_pathfinding_layer() -> void:
+	var pathfinding_source_layers : Array[TileMapLayer] = __get_pathfinding_source_layers()
+	__pathfinding_layer = pathfinding_source_layers.front()
+	__solid_cells = __find_solid_cells(pathfinding_source_layers)
 	return
 
 
 func __init_astar_grid() -> void:
 	__astar_grid = AStarGrid2D.new()
-	__astar_grid.region = pathfinding_map.region
-	__astar_grid.cell_size = pathfinding_map.cell_size
+	__astar_grid.region = __pathfinding_layer.get_used_rect()
+	__astar_grid.cell_size = __pathfinding_layer.tile_set.tile_size
 	return
 
 
@@ -94,6 +86,13 @@ func __init_astar_options() -> void:
 	__astar_grid.default_estimate_heuristic = heuristic
 	__astar_grid.diagonal_mode = diagonal_mode
 	__astar_grid.jumping_enabled = simplify_path
+	return
+
+
+func __init_debug() -> void:
+	if debug_enabled:
+		__debugger = PathfindingDebugger.new(debug_path_line_color, debug_path_line_width)
+		add_child(__debugger, false, Node.INTERNAL_MODE_FRONT)
 	return
 
 #endregion
@@ -151,7 +150,7 @@ func __find_solid_cells(layers: Array[TileMapLayer]) -> Array[Vector2i]:
 
 func __update_astar_grid() -> void:
 	__astar_grid.update()
-	for cell : Vector2i in pathfinding_map.solid_cells:
+	for cell : Vector2i in __solid_cells:
 		__astar_grid.set_point_solid(cell, not allow_ignore_solid_cells)
 	return
 
@@ -187,10 +186,10 @@ func __is_valid_destination_points(from: Vector2i, to: Vector2i) -> bool:
 
 
 func __point_to_position(point: Vector2i) -> Vector2:
-	return pathfinding_map.layer.map_to_local(point)
+	return __pathfinding_layer.map_to_local(point)
 
 
 func __position_to_point(position: Vector2) -> Vector2i:
-	return pathfinding_map.layer.local_to_map(position)
+	return __pathfinding_layer.local_to_map(position)
 
 #endregion
