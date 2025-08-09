@@ -22,7 +22,7 @@ func _draw() -> void:
 	return
 
 
-func draw_path(path___positions: Array[Vector2]) -> void:
-	__positions = PackedVector2Array(path___positions)
+func draw_path(positions: Array[Vector2]) -> void:
+	__positions = PackedVector2Array(positions)
 	queue_redraw()
 	return
