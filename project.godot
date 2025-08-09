@@ -15,10 +15,6 @@ run/main_scene="res://demo/demo_level.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://icon.svg"
 
-[autoload]
-
-PathfindingServer="*res://pathfinding/pathfinding_server.gd"
-
 [display]
 
 window/size/viewport_width=640
