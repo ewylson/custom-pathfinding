@@ -3,10 +3,11 @@ class_name PathfinderDebugger
 extends Node2D
 
 
-var positions : PackedVector2Array
-
 var line_color : Color
 var line_width : float
+
+
+var __positions : PackedVector2Array
 
 
 func _init(path_line_color: Color = Color.RED, path_line_width: float = 1.0) -> void:
@@ -16,12 +17,12 @@ func _init(path_line_color: Color = Color.RED, path_line_width: float = 1.0) -> 
 
 
 func _draw() -> void:
-	if positions.size() > 1:
-		draw_polyline(positions, line_color, line_width)
+	if __positions.size() > 1:
+		draw_polyline(__positions, line_color, line_width)
 	return
 
 
-func draw_path(path_positions: Array[Vector2]) -> void:
-	positions = PackedVector2Array(path_positions)
+func draw_path(path___positions: Array[Vector2]) -> void:
+	__positions = PackedVector2Array(path___positions)
 	queue_redraw()
 	return
