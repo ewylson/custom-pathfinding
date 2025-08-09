@@ -129,29 +129,6 @@ func is_target_reached() -> bool:
 	return __target_reached
 
 
-func __get_pathfinding_source_layers() -> Array[TileMapLayer]:
-	var layers : Array[TileMapLayer]
-	match source_pathfinding_mode:
-		SourcePathfindingMode.GROUPS_EXPLICIT:
-			layers.assign(get_tree().get_nodes_in_group(source_pathfinding_group_name))
-		SourcePathfindingMode.GROUPS_WITH_CHILDREN:
-			for source_node : Node in get_tree().get_nodes_in_group(source_pathfinding_group_name):
-				for source_child : Node in source_node.get_children():
-					if source_child is TileMapLayer:
-						layers.append(source_child)
-	return layers
-
-
-func __find_solid_cells(layers: Array[TileMapLayer]) -> Array[Vector2i]:
-	var solid_cells : Array[Vector2i]
-	var main_layer : TileMapLayer = layers.pop_front()
-	for layer : TileMapLayer in layers:
-		for cell : Vector2i in layer.get_used_cells():
-			if cell in main_layer.get_used_cells() and not solid_cells.has(cell):
-				solid_cells.append(cell)
-	return solid_cells
-
-
 func __update_astar_grid() -> void:
 	__astar_grid.update()
 	for cell : Vector2i in __solid_cells:
@@ -196,6 +173,29 @@ func __get_astar_grid_from_storage(key: String) -> AStarGrid2D:
 func __add_astar_grid_to_storage(key: String, astar_grid: AStarGrid2D) -> void:
 	astar_grid_storage[key] = astar_grid
 	return
+
+
+func __get_pathfinding_source_layers() -> Array[TileMapLayer]:
+	var layers : Array[TileMapLayer]
+	match source_pathfinding_mode:
+		SourcePathfindingMode.GROUPS_EXPLICIT:
+			layers.assign(get_tree().get_nodes_in_group(source_pathfinding_group_name))
+		SourcePathfindingMode.GROUPS_WITH_CHILDREN:
+			for source_node : Node in get_tree().get_nodes_in_group(source_pathfinding_group_name):
+				for source_child : Node in source_node.get_children():
+					if source_child is TileMapLayer:
+						layers.append(source_child)
+	return layers
+
+
+func __find_solid_cells(layers: Array[TileMapLayer]) -> Array[Vector2i]:
+	var solid_cells : Array[Vector2i]
+	var main_layer : TileMapLayer = layers.pop_front()
+	for layer : TileMapLayer in layers:
+		for cell : Vector2i in layer.get_used_cells():
+			if cell in main_layer.get_used_cells() and not solid_cells.has(cell):
+				solid_cells.append(cell)
+	return solid_cells
 
 
 func __is_valid_destination_points(from: Vector2i, to: Vector2i) -> bool:
