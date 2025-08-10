@@ -13,16 +13,14 @@ signal target_reached()
 
 
 @export_range(0.1, 1000.0, 0.01, "or_greater", "suffix:px") var target_desired_distance : float = 10.0
+@export var source_pathfinding_mode : SourcePathfindingMode
+@export var source_pathfinding_group_name : StringName = &"pathfinding_source_group"
 
 @export_group("Pathfinding")
 @export var heuristic : AStarGrid2D.Heuristic
 @export var diagonal_mode : AStarGrid2D.DiagonalMode
 @export var simplify_path : bool = false
 @export var allow_partial_path : bool = true
-
-@export_group("Pathfinding Source")
-@export var source_pathfinding_mode : SourcePathfindingMode
-@export var source_pathfinding_group_name : StringName = &"pathfinding_source_group"
 
 @export_group("Debug")
 @export var debug_enabled : bool = false
