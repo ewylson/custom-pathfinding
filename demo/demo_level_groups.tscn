@@ -23,8 +23,8 @@ metadata/_edit_group_ = true
 
 [node name="Pathfinder2D" parent="EnemyCharacterLand" index="2"]
 target_desired_distance = 12.0
-diagonal_mode = 3
 source_pathfinding_group_name = &"pathfinding_land_source_group"
+diagonal_mode = 3
 debug_enabled = true
 
 [node name="EnemyCharacterFlying" parent="." node_paths=PackedStringArray("movement_target") instance=ExtResource("2_cox04")]
@@ -35,8 +35,8 @@ metadata/_edit_group_ = true
 
 [node name="Pathfinder2D" parent="EnemyCharacterFlying" index="2"]
 target_desired_distance = 12.0
-simplify_path = true
 source_pathfinding_group_name = &"pathfinding_flying_source_group"
+simplify_path = true
 debug_enabled = true
 debug_path_line_color = Color(0, 0, 1, 1)
 
