@@ -42,9 +42,10 @@ var target_position : Vector2 :
 		return
 
 
+var __main_pathfinding_layer : TileMapLayer
+var __pathfinding_source_layers : Array[TileMapLayer]
+
 var __astar_grid : AStarGrid2D
-var __pathfinding_layer : TileMapLayer
-var __solid_cells : Array[Vector2i]
 
 var __path_points : Array[Vector2i]
 var __path_points_index : int = 0
@@ -68,16 +69,15 @@ func _ready() -> void:
 #region Initialization functions
 
 func __init_pathfinding_layer() -> void:
-	var pathfinding_source_layers : Array[TileMapLayer] = __get_pathfinding_source_layers()
-	__pathfinding_layer = pathfinding_source_layers.front()
-	__solid_cells = __find_solid_cells(pathfinding_source_layers)
+	__pathfinding_source_layers = __get_pathfinding_source_layers()
+	__main_pathfinding_layer = __pathfinding_source_layers.front()
 	return
 
 
 func __init_astar_grid() -> void:
 	__astar_grid = AStarGrid2D.new()
-	__astar_grid.region = __pathfinding_layer.get_used_rect()
-	__astar_grid.cell_size = __pathfinding_layer.tile_set.tile_size
+	__astar_grid.region = __main_pathfinding_layer.get_used_rect()
+	__astar_grid.cell_size = __main_pathfinding_layer.tile_set.tile_size
 	return
 
 
@@ -130,7 +130,7 @@ func is_target_reached() -> bool:
 
 func __update_astar_grid() -> void:
 	__astar_grid.update()
-	for cell : Vector2i in __solid_cells:
+	for cell : Vector2i in __find_solid_cells():
 		__astar_grid.set_point_solid(cell, true)
 	return
 
@@ -174,13 +174,14 @@ func __get_pathfinding_source_layers() -> Array[TileMapLayer]:
 	return layers
 
 
-func __find_solid_cells(layers: Array[TileMapLayer]) -> Array[Vector2i]:
+func __find_solid_cells() -> Array[Vector2i]:
 	var solid_cells : Array[Vector2i]
-	var main_layer : TileMapLayer = layers.pop_front()
-	for layer : TileMapLayer in layers:
-		for cell : Vector2i in layer.get_used_cells():
-			if cell in main_layer.get_used_cells() and not solid_cells.has(cell):
+	var index : int = 1
+	while index < __pathfinding_source_layers.size():
+		for cell : Vector2i in __pathfinding_source_layers[index].get_used_cells():
+			if cell in __main_pathfinding_layer.get_used_cells() and not solid_cells.has(cell):
 				solid_cells.append(cell)
+		index += 1
 	return solid_cells
 
 
@@ -189,10 +190,10 @@ func __is_valid_destination_points(from: Vector2i, to: Vector2i) -> bool:
 
 
 func __point_to_position(point: Vector2i) -> Vector2:
-	return __pathfinding_layer.map_to_local(point)
+	return __main_pathfinding_layer.map_to_local(point)
 
 
 func __position_to_point(position: Vector2) -> Vector2i:
-	return __pathfinding_layer.local_to_map(position)
+	return __main_pathfinding_layer.local_to_map(position)
 
 #endregion
